@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THRILL ZONE — Where Adrenaline Lives</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0B0B0B;
+      --charcoal: #1A1A1A;
+      --gunmetal: #2D2D2D;
+      --dust: #8B7355;
+      --clay: #6B5344;
+      --sand: #C4A77D;
+      --accent-red: #E63312;
+      --accent-orange: #FF4D1A;
+      --acid-yellow: #D4FF00;
+      --white: #F5F5F5;
+      --white-muted: rgba(245, 245, 245, 0.7);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Grain overlay for raw texture */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Anton', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      font-weight: 400;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      mix-blend-mode: difference;
+    }
+
+    .logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.15em;
+      color: var(--white);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 3rem;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: opacity 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      opacity: 0.6;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0 8vw;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(ellipse at 80% 30%, rgba(230, 51, 18, 0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 80%, rgba(139, 115, 85, 0.25) 0%, transparent 40%),
+        linear-gradient(180deg, rgba(11,11,11,0.7) 0%, rgba(11,11,11,0.6) 50%, rgba(11,11,11,0.9) 100%),
+        url('https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=1920&q=80');
+      background-size: cover;
+      background-position: center 40%;
+      z-index: -2;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 40%;
+      background: linear-gradient(to top, var(--black) 0%, transparent 100%);
+      z-index: -1;
+    }
+
+    /* Animated dust particles */
+    .dust-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .dust {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--sand);
+      border-radius: 50%;
+      opacity: 0;
+      animation: dustFloat 8s infinite;
+    }
+
+    @keyframes dustFloat {
+      0% {
+        opacity: 0;
+        transform: translateY(100vh) translateX(0);
+      }
+      10% {
+        opacity: 0.4;
+      }
+      90% {
+        opacity: 0.4;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-10vh) translateX(100px);
+      }
+    }
+
+    .hero-content {
+      max-width: 900px;
+    }
+
+    .hero-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.4em;
+      color: var(--accent-orange);
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1s ease 0.3s forwards;
+    }
+
+    .hero h1 {
+      font-size: clamp(4rem, 12vw, 10rem);
+      line-height: 0.9;
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(40px);
+      animation: fadeUp 1s ease 0.5s forwards;
+    }
+
+    .hero h1 span {
+      display: block;
+    }
+
+    .hero h1 .accent {
+      -webkit-text-stroke: 2px var(--white);
+      color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--white-muted);
+      max-width: 500px;
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1s ease 0.7s forwards;
+    }
+
+    .hero-cta {
+      margin-top: 3rem;
+      display: flex;
+      gap: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1s ease 0.9s forwards;
+    }
+
+    .btn-primary {
+      background: var(--accent-orange);
+      color: var(--black);
+      padding: 1rem 2.5rem;
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--acid-yellow);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+
+    .btn-primary:hover::before {
+      left: 0;
+    }
+
+    .btn-primary:hover {
+      color: var(--black);
+    }
+
+    .btn-secondary {
+      border: 1px solid var(--white);
+      color: var(--white);
+      padding: 1rem 2.5rem;
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      background: transparent;
+    }
+
+    .btn-secondary:hover {
+      background: var(--white);
+      color: var(--black);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 4rem;
+      left: 8vw;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      opacity: 0;
+      animation: fadeUp 1s ease 1.2s forwards;
+    }
+
+    .scroll-line {
+      width: 60px;
+      height: 1px;
+      background: var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--accent-orange);
+      animation: scrollPulse 2s infinite;
+    }
+
+    @keyframes scrollPulse {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    .scroll-text {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+    }
+
+    /* Hero visual stack */
+    .hero-visual {
+      position: absolute;
+      right: 8vw;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 400px;
+      height: 500px;
+      opacity: 0;
+      animation: fadeUp 1s ease 1s forwards;
+    }
+
+    .hero-image-stack {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-img {
+      position: absolute;
+      width: 280px;
+      height: 350px;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    }
+
+    .hero-img-1 {
+      top: 0;
+      left: 0;
+      background-image: url('https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=600&q=80');
+      z-index: 3;
+      transform: rotate(-6deg);
+    }
+
+    .hero-img-2 {
+      top: 60px;
+      left: 80px;
+      background-image: url('https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=80');
+      z-index: 2;
+      transform: rotate(3deg);
+      opacity: 0.7;
+    }
+
+    .hero-img-3 {
+      top: 120px;
+      left: 40px;
+      background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80');
+      z-index: 1;
+      transform: rotate(-2deg);
+      opacity: 0.5;
+    }
+
+    @media (max-width: 1200px) {
+      .hero-visual {
+        display: none;
+      }
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Section styling */
+    section {
+      padding: 10rem 8vw;
+      position: relative;
+    }
+
+    /* Stats Section */
+    .stats {
+      padding: 5rem 8vw;
+      background: var(--charcoal);
+      border-top: 1px solid var(--gunmetal);
+      border-bottom: 1px solid var(--gunmetal);
+    }
+
+    .stats-grid {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4rem;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      display: block;
+      font-family: 'Anton', sans-serif;
+      font-size: 3.5rem;
+      color: var(--accent-orange);
+      line-height: 1;
+    }
+
+    .stat-label {
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--white-muted);
+      margin-top: 0.75rem;
+    }
+
+    .stat-divider {
+      width: 1px;
+      height: 60px;
+      background: var(--gunmetal);
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid {
+        flex-wrap: wrap;
+        gap: 2rem;
+      }
+      .stat-divider {
+        display: none;
+      }
+      .stat-item {
+        flex: 1 1 40%;
+      }
+    }
+
+    .section-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      color: var(--accent-orange);
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .section-title {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      margin-bottom: 4rem;
+      line-height: 1;
+    }
+
+    /* Disciplines Section */
+    .disciplines {
+      background: var(--charcoal);
+    }
+
+    .disciplines-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      margin-top: 4rem;
+    }
+
+    .discipline-card {
+      aspect-ratio: 3/4;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .discipline-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, transparent 40%, var(--black) 100%);
+      z-index: 1;
+    }
+
+    .discipline-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.6s ease, filter 0.6s ease;
+      filter: grayscale(30%);
+    }
+
+    .discipline-card:hover .discipline-bg {
+      transform: scale(1.1);
+      filter: grayscale(0%);
+    }
+
+    .discipline-card:nth-child(1) .discipline-bg {
+      /* Paintball - tactical action */
+      background: url('https://images.unsplash.com/photo-1542810205-0a5b379f9c52?w=800&q=80') center/cover no-repeat;
+    }
+
+    .discipline-card:nth-child(2) .discipline-bg {
+      /* Quad bikes - ATV terrain */
+      background: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80') center/cover no-repeat;
+    }
+
+    .discipline-card:nth-child(3) .discipline-bg {
+      /* Dirt bikes - motocross */
+      background: url('https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&q=80') center/cover no-repeat;
+    }
+
+    .discipline-card:nth-child(4) .discipline-bg {
+      /* Drift - tire smoke */
+      background: url('https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80') center/cover no-repeat;
+    }
+
+    /* Accent stripe on hover */
+    .discipline-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: var(--accent-orange);
+      transition: width 0.4s ease;
+      z-index: 10;
+    }
+
+    .discipline-card:hover::after {
+      width: 100%;
+    }
+
+    .discipline-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: 2rem;
+      z-index: 2;
+    }
+
+    .discipline-number {
+      font-family: 'Anton', sans-serif;
+      font-size: 4rem;
+      -webkit-text-stroke: 1px var(--white);
+      color: transparent;
+      line-height: 1;
+      opacity: 0.4;
+    }
+
+    .discipline-name {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.8rem;
+      margin-top: 0.5rem;
+      text-transform: uppercase;
+    }
+
+    .discipline-desc {
+      font-size: 0.8rem;
+      color: var(--white-muted);
+      margin-top: 0.5rem;
+      font-weight: 300;
+      max-width: 200px;
+    }
+
+    /* Season Section */
+    .season {
+      background: var(--black);
+      overflow: hidden;
+    }
+
+    .season-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .season-visual {
+      position: relative;
+      height: 600px;
+      background: url('https://images.unsplash.com/photo-1504309092620-4d0ec726efa4?w=1000&q=80');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.9;
+    }
+
+    .season-visual::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(11,11,11,0.7) 0%, rgba(11,11,11,0.4) 100%);
+    }
+
+    .season-block {
+      position: absolute;
+      padding: 3rem;
+      background: rgba(26, 26, 26, 0.95);
+      border-left: 3px solid var(--accent-orange);
+      backdrop-filter: blur(10px);
+    }
+
+    .season-block.s1 {
+      top: 0;
+      left: 0;
+      width: 80%;
+    }
+
+    .season-block.s2 {
+      bottom: 0;
+      right: 0;
+      width: 80%;
+      border-left-color: var(--acid-yellow);
+    }
+
+    .season-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--accent-orange);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+
+    .season-block.s2 .season-label {
+      color: var(--acid-yellow);
+    }
+
+    .season-headline {
+      font-family: 'Anton', sans-serif;
+      font-size: 2rem;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .season-text {
+      font-size: 0.9rem;
+      color: var(--white-muted);
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    .season-content h2 {
+      font-size: clamp(3rem, 5vw, 4rem);
+      line-height: 1.1;
+      margin-bottom: 2rem;
+    }
+
+    .season-content p {
+      font-size: 1rem;
+      color: var(--white-muted);
+      font-weight: 300;
+      max-width: 450px;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Media Section */
+    .media {
+      background: linear-gradient(180deg, var(--charcoal) 0%, var(--black) 100%);
+    }
+
+    .media-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: repeat(2, 250px);
+      gap: 1.5rem;
+      margin-top: 4rem;
+    }
+
+    .media-item {
+      position: relative;
+      overflow: hidden;
+      background: var(--gunmetal);
+      display: flex;
+      align-items: flex-end;
+      padding: 2rem;
+    }
+
+    .media-item.large {
+      grid-row: span 2;
+      background: url('https://images.unsplash.com/photo-1574169208507-84376144848b?w=800&q=80') center/cover no-repeat;
+    }
+
+    .media-item:nth-child(2) {
+      background: url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=600&q=80') center/cover no-repeat;
+    }
+
+    .media-item:nth-child(3) {
+      background: url('https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=600&q=80') center/cover no-repeat;
+    }
+
+    .media-item:nth-child(4) {
+      background: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80') center/cover no-repeat;
+    }
+
+    .media-item:nth-child(5) {
+      background: url('https://images.unsplash.com/photo-1526676037777-05a232554f77?w=600&q=80') center/cover no-repeat;
+    }
+
+    .media-item::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--accent-orange);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      mix-blend-mode: overlay;
+      z-index: 1;
+    }
+
+    .media-item:hover::after {
+      opacity: 0.3;
+    }
+
+    .media-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, transparent 50%, rgba(11, 11, 11, 0.9) 100%);
+      z-index: 1;
+    }
+
+    .media-label {
+      position: relative;
+      z-index: 2;
+    }
+
+    .media-label span {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--accent-orange);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .media-label h3 {
+      font-size: 1.5rem;
+    }
+
+    .live-badge {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: var(--accent-red);
+      padding: 0.5rem 1rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 600;
+      z-index: 2;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    /* Partners Section */
+    .partners {
+      background: var(--black);
+      text-align: center;
+    }
+
+    .partners-intro {
+      max-width: 600px;
+      margin: 0 auto 5rem;
+      font-size: 1rem;
+      color: var(--white-muted);
+      font-weight: 300;
+    }
+
+    .partners-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 2rem;
+      opacity: 0.3;
+    }
+
+    .partner-slot {
+      aspect-ratio: 2/1;
+      border: 1px dashed var(--gunmetal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gunmetal);
+    }
+
+    .partners-cta {
+      margin-top: 4rem;
+    }
+
+    /* CTA Section */
+    .cta {
+      background: var(--charcoal);
+      text-align: center;
+      padding: 12rem 8vw;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at center, rgba(230, 51, 18, 0.15) 0%, transparent 50%),
+        linear-gradient(180deg, rgba(26,26,26,0.95) 0%, rgba(26,26,26,0.8) 50%, rgba(26,26,26,0.95) 100%),
+        url('https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+      pointer-events: none;
+    }
+
+    .cta h2 {
+      font-size: clamp(3rem, 8vw, 7rem);
+      line-height: 1;
+      margin-bottom: 2rem;
+    }
+
+    .cta p {
+      font-size: 1.1rem;
+      color: var(--white-muted);
+      font-weight: 300;
+      max-width: 500px;
+      margin: 0 auto 3rem;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    /* Footer */
+    footer {
+      padding: 4rem 8vw;
+      background: var(--black);
+      border-top: 1px solid var(--gunmetal);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.15em;
+    }
+
+    .footer-text {
+      font-size: 0.75rem;
+      color: var(--white-muted);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-location {
+      font-size: 0.75rem;
+      color: var(--accent-orange);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    /* Scroll animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(60px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .disciplines-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .season-wrapper {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+      }
+
+      .season-visual {
+        height: 500px;
+      }
+
+      .media-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .media-item.large {
+        grid-row: span 1;
+        grid-column: span 2;
+      }
+
+      .partners-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 1.5rem 2rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 0 6vw;
+      }
+
+      section {
+        padding: 6rem 6vw;
+      }
+
+      .disciplines-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .discipline-card {
+        aspect-ratio: 4/3;
+      }
+
+      .media-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .media-item.large {
+        grid-column: span 1;
+      }
+
+      .partners-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo">THRILL ZONE</div>
+    <div class="nav-links">
+      <a href="#disciplines">Disciplines</a>
+      <a href="#season">Seasons</a>
+      <a href="#media">Media</a>
+      <a href="#partners">Partners</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="dust-container" id="dust"></div>
+    <div class="hero-content">
+      <div class="hero-tag">Nigeria's Premier Extreme Sports Arena</div>
+      <h1>
+        <span>CONTROLLED</span>
+        <span class="accent">CHAOS.</span>
+      </h1>
+      <p class="hero-sub">Where precision meets intensity. Live-streamed competitions across paintball, quad bikes, dirt bikes, and drift racing.</p>
+      <div class="hero-cta">
+        <a href="#partners" class="btn-primary">Partner With Us</a>
+        <a href="#disciplines" class="btn-secondary">Explore</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-image-stack">
+        <div class="hero-img hero-img-1"></div>
+        <div class="hero-img hero-img-2"></div>
+        <div class="hero-img hero-img-3"></div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      <span class="scroll-text">Scroll</span>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <span class="stat-number">4</span>
+        <span class="stat-label">Disciplines</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item reveal">
+        <span class="stat-number">2</span>
+        <span class="stat-label">Seasons Planned</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item reveal">
+        <span class="stat-number">LIVE</span>
+        <span class="stat-label">Broadcast Ready</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item reveal">
+        <span class="stat-number">∞</span>
+        <span class="stat-label">Adrenaline</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="disciplines" id="disciplines">
+    <div class="reveal">
+      <span class="section-tag">The Arena</span>
+      <h2 class="section-title">FOUR DISCIPLINES.<br>ONE TERRAIN.</h2>
+    </div>
+    <div class="disciplines-grid">
+      <div class="discipline-card reveal">
+        <div class="discipline-bg"></div>
+        <div class="discipline-content">
+          <div class="discipline-number">01</div>
+          <h3 class="discipline-name">Paintball</h3>
+          <p class="discipline-desc">Tactical tournaments. Strategic warfare. Real consequences.</p>
+        </div>
+      </div>
+      <div class="discipline-card reveal">
+        <div class="discipline-bg"></div>
+        <div class="discipline-content">
+          <div class="discipline-number">02</div>
+          <h3 class="discipline-name">Quad Bikes</h3>
+          <p class="discipline-desc">Raw terrain. Aggressive speed. Unforgiving corners.</p>
+        </div>
+      </div>
+      <div class="discipline-card reveal">
+        <div class="discipline-bg"></div>
+        <div class="discipline-content">
+          <div class="discipline-number">03</div>
+          <h3 class="discipline-name">Dirt Bikes</h3>
+          <p class="discipline-desc">Precision jumps. Controlled chaos. Dust and glory.</p>
+        </div>
+      </div>
+      <div class="discipline-card reveal">
+        <div class="discipline-bg"></div>
+        <div class="discipline-content">
+          <div class="discipline-number">04</div>
+          <h3 class="discipline-name">Drift</h3>
+          <p class="discipline-desc">Tire smoke. Sideways control. Calculated risk.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="season" id="season">
+    <div class="season-wrapper">
+      <div class="season-visual reveal">
+        <div class="season-block s1">
+          <span class="season-label">Season One</span>
+          <h3 class="season-headline">The Foundation</h3>
+          <p class="season-text">Establishing the arena. Testing the terrain. Building the community. Raw competitions with local champions rising through dust and determination.</p>
+        </div>
+        <div class="season-block s2">
+          <span class="season-label">Season Two</span>
+          <h3 class="season-headline">Louder</h3>
+          <p class="season-text">Expanded disciplines. Creator partnerships. Live broadcast integration. International attention. The stakes are real.</p>
+        </div>
+      </div>
+      <div class="season-content reveal">
+        <span class="section-tag">Evolution</span>
+        <h2>EACH SEASON<br>GETS LOUDER.</h2>
+        <p>Thrill Zone operates in seasonal cycles. Each season introduces new challenges, expanded media coverage, and higher-profile partnerships.</p>
+        <p>Season Two is currently in development. Partner integration begins now.</p>
+        <a href="#partners" class="btn-primary">View Partnership Tiers</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="media" id="media">
+    <div class="reveal">
+      <span class="section-tag">Coverage</span>
+      <h2 class="section-title">LIVE. RAW.<br>UNFILTERED.</h2>
+    </div>
+    <div class="media-grid">
+      <div class="media-item large reveal">
+        <div class="live-badge">Live</div>
+        <div class="media-label">
+          <span>Broadcast</span>
+          <h3>POV STREAMING</h3>
+        </div>
+      </div>
+      <div class="media-item reveal">
+        <div class="media-label">
+          <span>Format</span>
+          <h3>HELMET CAMS</h3>
+        </div>
+      </div>
+      <div class="media-item reveal">
+        <div class="media-label">
+          <span>Platform</span>
+          <h3>MULTI-PLATFORM</h3>
+        </div>
+      </div>
+      <div class="media-item reveal">
+        <div class="media-label">
+          <span>Content</span>
+          <h3>CREATOR-LED</h3>
+        </div>
+      </div>
+      <div class="media-item reveal">
+        <div class="media-label">
+          <span>Reach</span>
+          <h3>GLOBAL AUDIENCE</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="partners" id="partners">
+    <div class="reveal">
+      <span class="section-tag">Partners</span>
+      <h2 class="section-title">BUILT FOR BRANDS<br>THAT MOVE.</h2>
+      <p class="partners-intro">Thrill Zone is designed for partnership integration. Arena branding, broadcast sponsorship, creator collaborations—structured for maximum visibility.</p>
+    </div>
+    <div class="partners-grid reveal">
+      <div class="partner-slot">Partner</div>
+      <div class="partner-slot">Partner</div>
+      <div class="partner-slot">Partner</div>
+      <div class="partner-slot">Partner</div>
+      <div class="partner-slot">Partner</div>
+    </div>
+    <div class="partners-cta reveal">
+      <a href="mailto:partners@thrillzone.ng" class="btn-primary">Become a Partner</a>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="reveal">
+      <h2>THIS IS<br>THE TERRAIN.</h2>
+      <p>Precision. Speed. Intensity. Real competition, broadcast live from Nigeria to the world.</p>
+      <div class="cta-buttons">
+        <a href="mailto:partners@thrillzone.ng" class="btn-primary">Partner With Thrill Zone</a>
+        <a href="#" class="btn-secondary">Register Interest</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">THRILL ZONE</div>
+    <div class="footer-text">© 2026 Thrill Zone. All rights reserved.</div>
+    <div class="footer-location">Lagos, Nigeria</div>
+  </footer>
+
+  <script>
+    // Generate dust particles
+    const dustContainer = document.getElementById('dust');
+    for (let i = 0; i < 50; i++) {
+      const dust = document.createElement('div');
+      dust.className = 'dust';
+      dust.style.left = Math.random() * 100 + '%';
+      dust.style.animationDelay = Math.random() * 8 + 's';
+      dust.style.animationDuration = (6 + Math.random() * 4) + 's';
+      dust.style.width = (1 + Math.random() * 2) + 'px';
+      dust.style.height = dust.style.width;
+      dustContainer.appendChild(dust);
+    }
+
+    // Scroll reveal animation
+    const reveals = document.querySelectorAll('.reveal');
+
+    function checkReveal() {
+      reveals.forEach(el => {
+        const windowHeight = window.innerHeight;
+        const elementTop = el.getBoundingClientRect().top;
+        const revealPoint = 150;
+
+        if (elementTop < windowHeight - revealPoint) {
+          el.classList.add('active');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', checkReveal);
+    window.addEventListener('load', checkReveal);
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Parallax effect on hero
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const hero = document.querySelector('.hero-content');
+      if (scrolled < window.innerHeight) {
+        hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+        hero.style.opacity = 1 - (scrolled / window.innerHeight);
+      }
+    });
+  </script>
+</body>
+</html>
+
